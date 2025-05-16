@@ -1,0 +1,20 @@
+[project]
+name = "chatbot"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "asyncio>=3.4.3",
+    "dotenv>=0.9.9",
+    "fastapi>=0.115.12",
+    "litellm>=1.69.2",
+    "mongomock>=4.3.0",
+    "mongomock-motor>=0.0.35",
+    "motor>=3.7.0",
+    "pydantic>=2.11.4",
+    "pydantic-settings>=2.9.1",
+    "pytest>=8.3.5",
+    "pytest-asyncio>=0.26.0",
+    "uvicorn>=0.34.2",
+]
