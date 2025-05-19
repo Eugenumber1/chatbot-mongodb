@@ -6,8 +6,10 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "asyncio>=3.4.3",
+    "docker>=7.1.0",
     "dotenv>=0.9.9",
     "fastapi>=0.115.12",
+    "httpx>=0.28.1",
     "litellm>=1.69.2",
     "mongomock>=4.3.0",
     "mongomock-motor>=0.0.35",
