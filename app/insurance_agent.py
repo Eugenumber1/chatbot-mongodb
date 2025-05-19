@@ -1,13 +1,11 @@
 from litellm import acompletion
 import dotenv
-from pydantic import BaseModel
 import os
 import logging
-from typing import Literal, Union
 from .config.config import Config
 from .models import Message, CarInfo
 import asyncio
-from .service_exceptions import NoResponseFromOpenAI
+from .service_exceptions import AgentNotAvailable
 
 
 dotenv.load_dotenv()
@@ -29,6 +27,7 @@ class InsuranceAgent:
             logging.error(
                 "The following error happened while generating the response: ", e
             )
+            raise AgentNotAvailable("The agent is not available")
 
     async def generate_answer(self, history: list[Message]):
         messages = [{"role": "system", "content": self.system_prompt}] + [
@@ -54,4 +53,5 @@ if __name__ == "__main__":
         )
         if response:
             print(response)
+
     asyncio.run(main())
