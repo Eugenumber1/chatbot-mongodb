@@ -1,0 +1,22 @@
+version: "3.8"
+services:
+  mongodb_test:
+    image: mongo:latest
+    ports:
+      - "27018:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: user
+      MONGO_INITDB_ROOT_PASSWORD: password
+
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    environment:
+      MONGODB_HOST: mongodb_test
+      MONGODB_USER: user
+      MONGODB_PASSWORD: password
+    depends_on:
+      - mongodb_test
+    command: ["./run_tests.sh"]

@@ -19,8 +19,6 @@ RUN --mount=type=cache,target=/root/.cache/uv \
     
 ENV PATH="/app/.venv/bin:$PATH"
 
-# running unit test
-RUN pytest 
 
 ENTRYPOINT []
 

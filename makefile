@@ -4,7 +4,7 @@ run:
 	docker compose up -d --build
 
 test:
-	docker compose run --rm app pytest
+	docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from app
 
 down:
 	docker compose down
