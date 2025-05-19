@@ -1,7 +1,7 @@
 .PHONY: run test down build clean
 
 run:
-	docker compose up --build
+	docker compose up -d --build
 
 test:
 	docker compose run --rm app pytest
