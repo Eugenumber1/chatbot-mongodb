@@ -10,8 +10,8 @@ from app.service_exceptions import AgentNotAvailable
 def mock_db_session():
     """Mock database session for all tests"""
     with (
-        patch("app.app.sessions", new_callable=AsyncMock) as mock_sessions,
-        patch("app.app.records", new_callable=AsyncMock) as mock_records,
+        patch("app.db.sessions", new_callable=AsyncMock) as mock_sessions,
+        patch("app.db.records", new_callable=AsyncMock) as mock_records,
     ):
         yield mock_sessions, mock_records
 

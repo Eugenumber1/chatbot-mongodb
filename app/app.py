@@ -4,7 +4,7 @@ from .models import ChatResponse, ChatRequest
 from .insurance_agent import InsuranceAgent
 import dotenv
 import json
-from .db import sessions, records
+from . import db
 from .service_exceptions import *
 from pymongo.errors import PyMongoError
 from typing import Optional
@@ -25,10 +25,10 @@ async def chat(chat_request: ChatRequest):
     try:
         if chat_request.session_id:
             session_id, history = await get_or_create_session(
-                sessions=sessions, session_id=chat_request.session_id
+                sessions=db.sessions, session_id=chat_request.session_id
             )
         else:
-            session_id, history = await get_or_create_session(sessions=sessions)
+            session_id, history = await get_or_create_session(sessions=db.sessions)
 
         message_history = [Message.model_validate(h) for h in history]
         message_history.append(Message(role="user", content=chat_request.message))
@@ -59,7 +59,7 @@ async def chat(chat_request: ChatRequest):
         reply = None
 
         if licence_plate_number:
-            duplicate = await detect_duplicate(records, licence_plate_number)
+            duplicate = await detect_duplicate(db.records, licence_plate_number)
             if duplicate:
                 reply = f"There is already a record for licence plate {licence_plate_number}. Please check if you entered the correct details."
                 message_history.append(Message(role="assistant", content=reply))
@@ -71,7 +71,7 @@ async def chat(chat_request: ChatRequest):
             data["session_id"] = session_id
 
             await save_record(
-                records, plate, data, prompt=insurance_agent.system_prompt
+                db.records, plate, data, prompt=insurance_agent.system_prompt
             )
             reply = "Thank you for providing all the necessary information. Here is your insurance quota..."
             complete = True
@@ -84,7 +84,9 @@ async def chat(chat_request: ChatRequest):
                     detail="Invalid agent response format",
                 )
 
-        await update_session(sessions, session_id=session_id, history=message_history)
+        await update_session(
+            db.sessions, session_id=session_id, history=message_history
+        )
 
         return ChatResponse(
             session_id=session_id, agent_response=reply, complete=complete
